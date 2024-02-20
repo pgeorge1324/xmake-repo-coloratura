@@ -16,6 +16,7 @@ package("diligentcore")
     on_install(function (package)
         local configs = {}
         table.insert(configs, "-DDILIGENT_NO_FORMAT_VALIDATION=ON")
+        table.insert(configs, "-DPLATFORM_WIN32=ON")
         table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (package:debug() and "Debug" or "Release"))
 
         import("package.tools.cmake").install(package, configs)
