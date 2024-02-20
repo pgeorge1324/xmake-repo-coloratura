@@ -22,6 +22,6 @@ package("diligentcore")
 
         package:add("linkdirs", package:installdir(path.join("lib")))
 --         package:add("links", "DiligentCore")
-        os.cp(package:installdir(path.join("lib", "Release", "*.lib")), package:installdir("lib"))
+        os.cp(package:installdir(path.join("lib", package:debug() and "Debug" or "Release", "*.lib")), package:installdir("lib"))
     end)
 package_end()
