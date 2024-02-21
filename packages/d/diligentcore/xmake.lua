@@ -10,19 +10,20 @@ package("diligentcore")
     add_deps("python")
 
     on_load("windows", function(package)
-        package:add("defines", "PLATFORM_WIN32=1")
+        -- package:add("defines", "PLATFORM_WIN32=1")
     end)
 
     on_install(function (package)
         local configs = {}
         table.insert(configs, "-DDILIGENT_NO_FORMAT_VALIDATION=ON")
-        table.insert(configs, "-DPLATFORM_WIN32=ON")
         table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (package:debug() and "Debug" or "Release"))
 
         import("package.tools.cmake").install(package, configs)
 
         package:add("linkdirs", package:installdir(path.join("lib")))
---         package:add("links", "DiligentCore")
         os.cp(package:installdir(path.join("lib", package:debug() and "Debug" or "Release", "*.lib")), package:installdir("lib"))
+        os.cp(package:installdir(path.join("bin", package:debug() and "Debug" or "Release", "*.dll")), package:installdir("bin"))
+        os.rm(package:installdir(path.join("lib", package:debug() and "Debug" or "Release")))
+        os.rm(package:installdir(path.join("bin", package:debug() and "Debug" or "Release")))
     end)
 package_end()
